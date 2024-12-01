@@ -1,9 +1,11 @@
+import 'package:adventofcode2024/pages/day_01.dart';
 import 'package:adventofcode2024/pages/settings.dart';
+import 'package:adventofcode2024/pages/template.dart';
 import 'package:adventofcode2024/strings.dart' as strings;
-import 'package:adventofcode2024/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:adventofcode2024/data.dart' as puzzle_data;
+import 'dart:developer' as dev;
 
 void main() {
   runApp(const AOCApp2024());
@@ -12,12 +14,24 @@ void main() {
 class AOCApp2024 extends StatelessWidget {
   const AOCApp2024({super.key});
 
+  final colorScheme = const ColorScheme(
+      brightness: Brightness.light,
+      primary: Color.fromRGBO(0, 100, 0, 1),
+      inversePrimary: Color.fromRGBO(0, 255, 0, 1),
+      onPrimary: Colors.white,
+      secondary: Color.fromRGBO(100, 0, 0, 1),
+      onSecondary: Colors.white,
+      error: Colors.black,
+      onError: Colors.red,
+      surface: Colors.white,
+      onSurface: Color.fromRGBO(0, 42, 0, 1));
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Advent of Code 2024',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
+        colorScheme: colorScheme,
         useMaterial3: true,
       ),
       home: const AOCWidget2024(),
@@ -34,20 +48,8 @@ class AOCWidget2024 extends StatefulWidget {
 
 class _AOCWidget2024State extends State<AOCWidget2024> {
   final SharedPreferencesAsync prefs = SharedPreferencesAsync();
-  String _data = '';
 
-  Future<void> fetchData(int year, int day) async {
-    var data = await puzzle_data.fetchPuzzleData(2023, 1);
-
-    setState(() {
-      _data = data;
-    });
-  }
-
-  void _incrementCounter() {
-    fetchData(2023, 3);
-    setState(() {});
-  }
+  Widget _panel = const TemplateWidget();
 
   @override
   void initState() {
@@ -68,7 +70,7 @@ class _AOCWidget2024State extends State<AOCWidget2024> {
           child: ListView(padding: EdgeInsets.zero, children: [
         DrawerHeader(
             decoration: BoxDecoration(color: inversePrimary),
-            child: const Text(drawerTitle)),
+            child: const Text(strings.drawerTitle)),
         IconButton(
           icon: ImageIcon(strings.elfImage.image),
           onPressed: () {
@@ -83,40 +85,14 @@ class _AOCWidget2024State extends State<AOCWidget2024> {
           },
         ),
         ListTile(
-          title: const Text('Settings'),
-          onTap: () {},
-        ),
-        ListTile(
           title: const Text('Day 1'),
-          onTap: () {},
+          onTap: () {
+            setState(() => _panel = const Day01Widget());
+          },
         ),
         ListTile(title: const Text('Day 2'), onTap: () {}),
       ])),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Flexible(
-              child: FractionallySizedBox(
-                heightFactor: .5,
-                widthFactor: 1.0,
-                child: Text(_data),
-              ),
-            ),
-            Flexible(
-              child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.green,
-                      image: DecorationImage(image: elfImage.image))),
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+      body: Center(child: _panel),
     );
   }
 }
