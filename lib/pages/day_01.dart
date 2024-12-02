@@ -1,13 +1,8 @@
 import 'dart:developer' as dev;
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart' as intl;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:adventofcode2024/data.dart' as puzzle_data;
-
-enum StraightMeterOrientation { vertical, horizontal }
-
-var angleFormat = intl.NumberFormat('0.0°');
 
 class Day01Widget extends StatefulWidget {
   const Day01Widget({
