@@ -1,4 +1,5 @@
 import 'package:adventofcode2024/pages/day_01.dart';
+import 'package:adventofcode2024/pages/day_02.dart';
 import 'package:adventofcode2024/pages/settings.dart';
 import 'package:adventofcode2024/pages/template.dart';
 import 'package:adventofcode2024/strings.dart' as strings;
@@ -88,9 +89,15 @@ class _AOCWidget2024State extends State<AOCWidget2024> {
           title: const Text('Day 1'),
           onTap: () {
             setState(() => _panel = const Day01Widget());
+            Navigator.pop(context);
           },
         ),
-        ListTile(title: const Text('Day 2'), onTap: () {}),
+        ListTile(
+            title: const Text('Day 2'),
+            onTap: () {
+              setState(() => _panel = const Day02Widget());
+              Navigator.pop(context);
+            }),
       ])),
       body: Center(child: _panel),
     );
