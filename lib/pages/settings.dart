@@ -78,9 +78,10 @@ class _SettingsState extends State<Settings> {
             child: IconButton(
               icon: const Icon(Icons.delete),
               onPressed: () {
-                for (int i = 1; i <= 25; i++) {
-                  prefs.remove('202412${i}').catchError(
-                      (e) => dev.log("No data removed for 202412${i}"));
+                var year = 2024;
+                for (int day = 1; day <= 25; day++) {
+                  prefs.remove('$year$day').catchError(
+                      (e) => dev.log("No data removed for $year$day"));
                 }
               },
             ),
