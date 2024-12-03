@@ -22,12 +22,12 @@ class _SettingsState extends State<Settings> {
   }
 
   Future<void> saveToken(String value) async {
-    prefs.setString('session', value);
+    await prefs.setString('session', value);
     setState(() => _sessionToken = value);
   }
 
   Future<void> deleteToken() async {
-    prefs.remove('session');
+    await prefs.remove('session');
     setState(() => _sessionToken = '');
   }
 

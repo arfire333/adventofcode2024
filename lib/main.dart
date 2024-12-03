@@ -63,7 +63,9 @@ class _AOCWidget2024State extends State<AOCWidget2024> {
       appBar: AppBar(
           backgroundColor: inversePrimary,
           title: Row(children: [
-            ImageIcon(strings.elfImage.image),
+            ImageIcon(
+              strings.elfImage.image,
+            ),
             const SafeArea(child: Text(strings.appTitle)),
           ])),
       drawer: Drawer(
