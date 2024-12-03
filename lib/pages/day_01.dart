@@ -1,8 +1,10 @@
-import 'dart:developer' as dev;
 import 'dart:math';
+import 'package:adventofcode2024/solutions/day01_solution.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:adventofcode2024/data.dart' as puzzle_data;
+
+const int year = 2024;
+const int day = 1;
 
 class Day01Widget extends StatefulWidget {
   const Day01Widget({
@@ -14,91 +16,38 @@ class Day01Widget extends StatefulWidget {
 }
 
 class _Day01WidgetState extends State<Day01Widget> {
-  final SharedPreferencesAsync prefs = SharedPreferencesAsync();
-  List<int> left = List<int>.empty(growable: true);
-  List<int> right = List<int>.empty(growable: true);
-  List<int> sortedLeft = List<int>.empty(growable: true);
-  List<int> sortedRight = List<int>.empty(growable: true);
-  bool ready = false;
-  String answer1 = '';
-  String answer2 = '';
+  Day01Solution data = Day01Solution();
 
-  Future<void> fetchData(int year, int day) async {
-    var data = await puzzle_data.fetchPuzzleData(2024, 1);
-    left.clear();
-    right.clear();
-
-    var lines = data.split('\n');
-
-    for (var line in lines) {
-      if (line.isEmpty) {
-        continue;
-      }
-      final re = RegExp(r'( +)');
-      var entries = line.split(re);
-
-      left.add(int.parse(entries[0]));
-      right.add(int.parse(entries[1]));
+  Future<void> runSolution() async {
+    await data.fetchData(year, day);
+    if (data.dataIsValid) {
+      data.part1();
+      data.part2();
     }
-
-    setState(() {
-      answer1 = part1();
-      answer2 = part2();
-    });
-    dev.log(answer1);
-    dev.log(answer2);
-  }
-
-  String part1() {
-    sortedLeft = List<int>.from(left);
-    sortedLeft.sort();
-    sortedRight = List<int>.from(right);
-    sortedRight.sort();
-    var sum = 0;
-    // Part 1
-    for (int i = 0; i < sortedLeft.length; i++) {
-      sum += (sortedLeft[i] > sortedRight[i]
-          ? sortedLeft[i] - sortedRight[i]
-          : sortedRight[i] - sortedLeft[i]);
-    }
-
-    return 'Part 1 answer: $sum';
-  }
-
-  String part2() {
-    Map<int, int> counts = <int, int>{};
-    for (var value in left) {
-      counts[value] = 0;
-    }
-
-    for (var value in right) {
-      int last = counts[value] ?? -1;
-      if (last >= 0) {
-        counts[value] = last + 1;
-      }
-    }
-
-    var total = 0;
-    counts.forEach((key, value) {
-      total += key * value;
-    });
-
-    return 'Part 2 answer: $total';
+    setState(() => data = data);
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      IconButton(
-        icon: const Icon(Icons.play_arrow),
-        onPressed: () {
-          fetchData(2024, 1);
-        },
-      ),
+      const Text('Day $day', textScaler: TextScaler.linear(1.5)),
+      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        const Text('Part 1: '),
+        SelectableText(data.answer1),
+        IconButton(
+            icon: const Icon(Icons.play_arrow),
+            onPressed: () => runSolution(),
+            tooltip: 'Run Solution'),
+        IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () => puzzle_data.erasePuzzleData(year, day),
+            tooltip: 'Delete cached data'),
+        const Text('Part 2: '),
+        SelectableText(data.answer2),
+      ]),
       Flexible(
           child: CustomPaint(
-              painter: _Day01Painter(
-                  left, right, sortedLeft, sortedRight, answer1, answer2),
+              painter: _Day01Painter(data),
               child: const FractionallySizedBox(
                   widthFactor: 1.0, heightFactor: 1.0)))
     ]);
@@ -106,14 +55,8 @@ class _Day01WidgetState extends State<Day01Widget> {
 }
 
 class _Day01Painter extends CustomPainter {
-  List<int> left;
-  List<int> right;
-  List<int> sortedLeft;
-  List<int> sortedRight;
-  String answer1;
-  String answer2;
-  _Day01Painter(this.left, this.right, this.sortedLeft, this.sortedRight,
-      this.answer1, this.answer2);
+  Day01Solution data;
+  _Day01Painter(this.data);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -128,55 +71,48 @@ class _Day01Painter extends CustomPainter {
       ..color = Colors.green;
 
     var max = 0;
-    for (int i = 0; i < left.length; i++) {
-      if (left[i] > max) {
-        max = left[i];
+    for (int i = 0; i < data.left.length; i++) {
+      if (data.left[i] > max) {
+        max = data.left[i];
       }
     }
 
     var padding = 20.0;
     var height = (size.height - 4 * padding) / 4;
 
-    for (int i = 0; i < min(size.width - 2 * padding, left.length); i++) {
+    for (int i = 0; i < min(size.width - 2 * padding, data.left.length); i++) {
       Offset p1 = Offset(i.toDouble() + padding, height + padding * 2);
       Offset p2 = Offset(i.toDouble() + padding,
-          left[i].toDouble() * height / max + padding * 2);
+          data.left[i].toDouble() * height / max + padding * 2);
       canvas.drawLine(p1, p2, redLine);
     }
 
-    for (int i = 0; i < min(size.width - 2 * padding, left.length); i++) {
+    for (int i = 0; i < min(size.width - 2 * padding, data.left.length); i++) {
       Offset p1 = Offset(i.toDouble() + padding, height + padding * 2);
       Offset p2 = Offset(i.toDouble() + padding,
-          right[i].toDouble() * height / max + padding * 2);
+          data.right[i].toDouble() * height / max + padding * 2);
       canvas.drawLine(p1, p2, greenLine);
     }
 
-    for (int i = 0; i < min(size.width - 2 * padding, left.length); i++) {
+    for (int i = 0; i < min(size.width - 2 * padding, data.left.length); i++) {
       Offset p1 = Offset(i.toDouble() + padding, 1 * height + 4 * padding);
-      Offset p2 = Offset(i.toDouble() + padding,
-          sortedLeft[i].toDouble() * height / max + 1 * height + 4 * padding);
+      Offset p2 = Offset(
+          i.toDouble() + padding,
+          data.sortedLeft[i].toDouble() * height / max +
+              1 * height +
+              4 * padding);
       canvas.drawLine(p1, p2, redLine);
     }
 
-    for (int i = 0; i < min(size.width - 2 * padding, left.length); i++) {
+    for (int i = 0; i < min(size.width - 2 * padding, data.left.length); i++) {
       Offset p1 = Offset(i.toDouble() + padding, 1 * height + 4 * padding);
-      Offset p2 = Offset(i.toDouble() + padding,
-          sortedRight[i].toDouble() * height / max + 1 * height + 4 * padding);
+      Offset p2 = Offset(
+          i.toDouble() + padding,
+          data.sortedRight[i].toDouble() * height / max +
+              1 * height +
+              4 * padding);
       canvas.drawLine(p1, p2, greenLine);
     }
-    // Draw answer
-    final textStyle = TextStyle(color: Colors.green, fontSize: padding);
-    final answer1Painter = TextPainter(
-        text: TextSpan(text: answer1, style: textStyle),
-        textDirection: TextDirection.ltr);
-    answer1Painter.layout();
-    var textOffset = Offset(padding, 0);
-    answer1Painter.paint(canvas, textOffset);
-    final answer2Painter = TextPainter(
-        text: TextSpan(text: answer2, style: textStyle),
-        textDirection: TextDirection.ltr);
-    answer2Painter.layout();
-    answer2Painter.paint(canvas, textOffset + Offset(0, padding));
   }
 
   @override

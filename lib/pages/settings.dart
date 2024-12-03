@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:adventofcode2024/strings.dart';
+import 'package:adventofcode2024/common.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
