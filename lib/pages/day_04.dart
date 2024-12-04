@@ -1,21 +1,21 @@
-import 'package:adventofcode2024/solutions/day03_solution.dart';
+import 'package:adventofcode2024/solutions/day04_solution.dart';
 import 'package:flutter/material.dart';
 import 'package:adventofcode2024/data.dart' as puzzle_data;
 
 const int year = 2024;
-const int day = 3;
+const int day = 4;
 
-class Day03Widget extends StatefulWidget {
-  const Day03Widget({
+class Day04Widget extends StatefulWidget {
+  const Day04Widget({
     super.key,
   });
 
   @override
-  State<Day03Widget> createState() => _Day03WidgetState();
+  State<Day04Widget> createState() => _Day04WidgetState();
 }
 
-class _Day03WidgetState extends State<Day03Widget> {
-  Day03Solution data = Day03Solution();
+class _Day04WidgetState extends State<Day04Widget> {
+  Day04Solution data = Day04Solution();
   String puzzle = '';
 
   Future<void> runSolution() async {
@@ -43,23 +43,27 @@ class _Day03WidgetState extends State<Day03Widget> {
             icon: const Icon(Icons.delete),
             onPressed: () => puzzle_data.erasePuzzleData(year, day),
             tooltip: 'Delete cached data'),
+        IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () => puzzle_data.erasePuzzle(year, day),
+            tooltip: 'Delete puzzle text'),
         const Text('Part 2: '),
         SelectableText(data.answer2),
       ]),
       Expanded(
-          child: SingleChildScrollView(child: SelectableText(data.puzzle))),
+          child: SingleChildScrollView(child: SelectableText(data.puzzleText))),
       Flexible(
           child: CustomPaint(
-              painter: _Day03Painter(data),
+              painter: _Day04Painter(data),
               child: const FractionallySizedBox(
                   widthFactor: 1.0, heightFactor: 1.0))),
     ]);
   }
 }
 
-class _Day03Painter extends CustomPainter {
-  Day03Solution data;
-  _Day03Painter(this.data);
+class _Day04Painter extends CustomPainter {
+  Day04Solution data;
+  _Day04Painter(this.data);
 
   @override
   void paint(Canvas canvas, Size size) {

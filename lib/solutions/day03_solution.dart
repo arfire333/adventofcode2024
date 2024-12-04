@@ -1,6 +1,8 @@
 import 'package:adventofcode2024/data.dart' as puzzle_data;
+import 'package:html/parser.dart' as html;
 
 class Day03Solution {
+  String puzzle = '';
   bool dataIsValid = false;
   String answer1 = 'tbd';
   String answer2 = 'tbd';
@@ -8,6 +10,9 @@ class Day03Solution {
 
   Future<void> fetchData(int year, int day) async {
     var rawData = await puzzle_data.fetchPuzzleData(year, day);
+    var rawPuzzle = await puzzle_data.fetchPuzzle(year, day) ?? '';
+
+    puzzle = html.parse(rawPuzzle).body?.querySelector('main')?.text ?? '';
 
     if (rawData == null) {
       answer1 = 'Error getting data.';
