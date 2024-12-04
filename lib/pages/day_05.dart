@@ -1,21 +1,21 @@
-import 'package:adventofcode2024/solutions/template_solution.dart';
+import 'package:adventofcode2024/solutions/day05_solution.dart';
 import 'package:flutter/material.dart';
 import 'package:adventofcode2024/data.dart' as puzzle_data;
 
 const int year = 2024;
-const int day = 0;
+const int day = 05;
 
-class TemplateWidget extends StatefulWidget {
-  const TemplateWidget({
+class Day05Widget extends StatefulWidget {
+  const Day05Widget({
     super.key,
   });
 
   @override
-  State<TemplateWidget> createState() => _TemplateWidgetState();
+  State<Day05Widget> createState() => _Day05WidgetState();
 }
 
-class _TemplateWidgetState extends State<TemplateWidget> {
-  TemplateSolution data = TemplateSolution();
+class _Day05WidgetState extends State<Day05Widget> {
+  Day05Solution data = Day05Solution();
 
   Future<void> runSolution() async {
     await data.fetchData(year, day);
@@ -52,16 +52,16 @@ class _TemplateWidgetState extends State<TemplateWidget> {
           child: SingleChildScrollView(child: SelectableText(data.puzzleText))),
       Flexible(
           child: CustomPaint(
-              painter: _TemplatePainter(data),
+              painter: _Day05Painter(data),
               child: const FractionallySizedBox(
                   widthFactor: 1.0, heightFactor: 1.0)))
     ]);
   }
 }
 
-class _TemplatePainter extends CustomPainter {
-  TemplateSolution data;
-  _TemplatePainter(this.data);
+class _Day05Painter extends CustomPainter {
+  Day05Solution data;
+  _Day05Painter(this.data);
 
   @override
   void paint(Canvas canvas, Size size) {
