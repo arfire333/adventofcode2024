@@ -4,6 +4,7 @@ import 'package:adventofcode2024/pages/day_03.dart';
 import 'package:adventofcode2024/pages/day_04.dart';
 import 'package:adventofcode2024/pages/day_05.dart';
 import 'package:adventofcode2024/pages/day_06.dart';
+import 'package:adventofcode2024/pages/day_07.dart';
 import 'package:adventofcode2024/pages/settings.dart';
 import 'package:adventofcode2024/pages/template.dart';
 import 'package:adventofcode2024/common.dart' as strings;
@@ -68,7 +69,8 @@ class _AOCWidget2024State extends State<AOCWidget2024> {
       const Day03Widget(),
       const Day04Widget(),
       const Day05Widget(),
-      const Day06Widget()
+      const Day06Widget(),
+      const Day07Widget()
     ];
     final inversePrimary = Theme.of(context).colorScheme.inversePrimary;
     return Scaffold(
@@ -105,7 +107,7 @@ class _AOCWidget2024State extends State<AOCWidget2024> {
             Navigator.pop(context);
           },
         ),
-        for (var i = 1; i <= 6; i++)
+        for (var i = 1; i <= dayList.length - 1; i++)
           ListTile(
               title: Text('Day $i'),
               onTap: () {
