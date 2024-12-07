@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:adventofcode2024/data.dart' as puzzle_data;
 import 'package:html/parser.dart' as html;
 
