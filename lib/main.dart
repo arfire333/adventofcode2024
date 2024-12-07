@@ -3,6 +3,7 @@ import 'package:adventofcode2024/pages/day_02.dart';
 import 'package:adventofcode2024/pages/day_03.dart';
 import 'package:adventofcode2024/pages/day_04.dart';
 import 'package:adventofcode2024/pages/day_05.dart';
+import 'package:adventofcode2024/pages/day_06.dart';
 import 'package:adventofcode2024/pages/settings.dart';
 import 'package:adventofcode2024/pages/template.dart';
 import 'package:adventofcode2024/common.dart' as strings;
@@ -60,6 +61,15 @@ class _AOCWidget2024State extends State<AOCWidget2024> {
 
   @override
   Widget build(BuildContext context) {
+    final dayList = [
+      const TemplateWidget(),
+      const Day01Widget(),
+      const Day02Widget(),
+      const Day03Widget(),
+      const Day04Widget(),
+      const Day05Widget(),
+      const Day06Widget()
+    ];
     final inversePrimary = Theme.of(context).colorScheme.inversePrimary;
     return Scaffold(
       appBar: AppBar(
@@ -95,37 +105,13 @@ class _AOCWidget2024State extends State<AOCWidget2024> {
             Navigator.pop(context);
           },
         ),
-        ListTile(
-          title: const Text('Day 1'),
-          onTap: () {
-            setState(() => _panel = const Day01Widget());
-            Navigator.pop(context);
-          },
-        ),
-        ListTile(
-            title: const Text('Day 2'),
-            onTap: () {
-              setState(() => _panel = const Day02Widget());
-              Navigator.pop(context);
-            }),
-        ListTile(
-            title: const Text('Day 3'),
-            onTap: () {
-              setState(() => _panel = const Day03Widget());
-              Navigator.pop(context);
-            }),
-        ListTile(
-            title: const Text('Day 4'),
-            onTap: () {
-              setState(() => _panel = const Day04Widget());
-              Navigator.pop(context);
-            }),
-        ListTile(
-            title: const Text('Day 5'),
-            onTap: () {
-              setState(() => _panel = const Day05Widget());
-              Navigator.pop(context);
-            }),
+        for (var i = 1; i <= 6; i++)
+          ListTile(
+              title: Text('Day $i'),
+              onTap: () {
+                setState(() => _panel = dayList[i]);
+                Navigator.pop(context);
+              }),
       ])),
       body: Center(child: _panel),
     );
