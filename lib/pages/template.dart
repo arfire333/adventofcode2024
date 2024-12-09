@@ -48,13 +48,20 @@ class _TemplateWidgetState extends State<TemplateWidget> {
         const Text('Part 2: '),
         SelectableText(data.answer2),
       ]),
-      Expanded(
-          child: SingleChildScrollView(child: SelectableText(data.puzzleText))),
       Flexible(
-          child: CustomPaint(
-              painter: _TemplatePainter(data),
-              child: const FractionallySizedBox(
-                  widthFactor: 1.0, heightFactor: 1.0)))
+        child: CustomPaint(
+          painter: _TemplatePainter(data),
+          child: FractionallySizedBox(
+            widthFactor: 1.0,
+            heightFactor: 1.0,
+            child: SingleChildScrollView(
+              child: SelectableText(
+                data.puzzleText,
+              ),
+            ),
+          ),
+        ),
+      ),
     ]);
   }
 }
@@ -68,12 +75,12 @@ class _TemplatePainter extends CustomPainter {
     final redLine = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1
-      ..color = Colors.red;
+      ..color = const Color.fromARGB(50, 255, 0, 0);
 
     final greenLine = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1
-      ..color = Colors.green;
+      ..color = const Color.fromARGB(50, 0, 255, 0);
 
     for (double i = 0; i <= size.width; i += 10) {
       Offset p1 = Offset(i, 0);

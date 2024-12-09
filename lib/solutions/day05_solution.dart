@@ -58,7 +58,7 @@ class Day05Solution {
           newUpdate.add(int.parse(val));
         }
         updates.add(newUpdate);
-        dev.log('${newUpdate.toString()}');
+        dev.log(newUpdate.toString());
       }
     }
     dev.log('Order rules');
