@@ -50,13 +50,18 @@ class _Day04WidgetState extends State<Day04Widget> {
         const Text('Part 2: '),
         SelectableText(data.answer2),
       ]),
-      Expanded(
-          child: SingleChildScrollView(child: SelectableText(data.puzzleText))),
       Flexible(
-          child: CustomPaint(
-              painter: _Day04Painter(data),
-              child: const FractionallySizedBox(
-                  widthFactor: 1.0, heightFactor: 1.0))),
+        child: CustomPaint(
+          painter: _Day04Painter(data),
+          child: FractionallySizedBox(
+            widthFactor: 1.0,
+            heightFactor: 1.0,
+            child: SingleChildScrollView(
+              child: SelectableText(data.puzzleText),
+            ),
+          ),
+        ),
+      ),
     ]);
   }
 }
@@ -70,12 +75,12 @@ class _Day04Painter extends CustomPainter {
     final redLine = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1
-      ..color = Colors.red;
+      ..color = const Color.fromARGB(50, 255, 0, 0);
 
     final greenLine = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1
-      ..color = Colors.green;
+      ..color = const Color.fromARGB(50, 0, 255, 0);
 
     for (double i = 0; i <= size.width; i += 10) {
       Offset p1 = Offset(i, 0);

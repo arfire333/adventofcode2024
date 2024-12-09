@@ -6,10 +6,12 @@ import 'package:adventofcode2024/pages/day_05.dart';
 import 'package:adventofcode2024/pages/day_06.dart';
 import 'package:adventofcode2024/pages/day_07.dart';
 import 'package:adventofcode2024/pages/day_08.dart';
+import 'package:adventofcode2024/pages/day_09.dart';
 import 'package:adventofcode2024/pages/settings.dart';
 import 'package:adventofcode2024/pages/template.dart';
 import 'package:adventofcode2024/common.dart' as strings;
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -36,9 +38,10 @@ class AOCApp2024 extends StatelessWidget {
     return MaterialApp(
       title: 'Advent of Code 2024',
       theme: ThemeData(
-        colorScheme: colorScheme,
-        useMaterial3: true,
-      ),
+          colorScheme: colorScheme,
+          useMaterial3: true,
+          textTheme: GoogleFonts.ubuntuMonoTextTheme()
+              .copyWith(bodyMedium: GoogleFonts.ubuntuMono(fontSize: 18))),
       home: const AOCWidget2024(),
     );
   }
@@ -72,7 +75,8 @@ class _AOCWidget2024State extends State<AOCWidget2024> {
       const Day05Widget(),
       const Day06Widget(),
       const Day07Widget(),
-      const Day08Widget()
+      const Day08Widget(),
+      const Day09Widget()
     ];
     final inversePrimary = Theme.of(context).colorScheme.inversePrimary;
     return Scaffold(

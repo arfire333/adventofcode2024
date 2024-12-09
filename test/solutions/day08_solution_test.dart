@@ -1,6 +1,5 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:adventofcode2024/data.dart';
 import 'package:adventofcode2024/solutions/day08_solution.dart';
 import 'package:flutter_test/flutter_test.dart';
 
