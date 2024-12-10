@@ -1,7 +1,5 @@
 import 'dart:io';
-
-import 'package:adventofcode2024/data.dart' as puzzle_data;
-import 'package:html/parser.dart' as html;
+import 'package:adventofcode2024/mixins/solution.dart';
 import 'dart:developer' as dev;
 
 class Guard {
@@ -30,7 +28,7 @@ final Map<String, Pair> possibleDeltas = {
   '<': Pair(0, -1)
 };
 
-class Day06Solution {
+class Day06Solution with Solution {
   Guard guard = Guard(Pair(0, 0), '.');
   Guard initialGuardPosition = Guard(Pair(0, 0), '.');
   Set<Guard> visitedPlus = {};
@@ -38,25 +36,8 @@ class Day06Solution {
   Set<Pair> possibleBarriers = {};
   List<String> board = [];
   List<List<String>> modifiedBoard = [];
-  String puzzleText = '';
-  bool dataIsValid = false;
-  String answer1 = 'tbd';
-  String answer2 = 'tbd';
 
-  Future<void> fetchData(int year, int day) async {
-    var rawData = await puzzle_data.fetchPuzzleData(year, day);
-    var rawPuzzle = await puzzle_data.fetchPuzzle(year, day) ?? '';
-
-    puzzleText = html.parse(rawPuzzle).body?.querySelector('main')?.text ?? '';
-
-    if (rawData == null) {
-      answer1 = 'Error getting data.';
-      answer2 = 'Error getting data.';
-      return;
-    }
-    parse(rawData);
-  }
-
+  @override
   void parse(String rawData) {
     // Don't forget to clear data
     var lines = rawData.split('\n');
@@ -120,6 +101,7 @@ class Day06Solution {
     return false;
   }
 
+  @override
   void part1() {
     guard = Guard(initialGuardPosition.pos, initialGuardPosition.head);
     visitedPositions.clear();
@@ -140,6 +122,7 @@ class Day06Solution {
     answer1 = '${visitedPositions.length}';
   }
 
+  @override
   void part2() {
     Set<Pair> newBarriers = {};
     modifiedBoard = [];
@@ -212,6 +195,12 @@ class Day06Solution {
       stdout.write('\n');
     }
   }
+
+  @override
+  int get day => 6;
+
+  @override
+  int get year => 2024;
 }
 
 void printBoard(List<List<String>> board) {

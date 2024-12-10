@@ -1,11 +1,13 @@
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:adventofcode2024/solutions/day09_solution.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences_platform_interface/shared_preferences_async_platform_interface.dart';
+import 'package:shared_preferences_platform_interface/in_memory_shared_preferences_async.dart';
 
 String rawData = "2333133121414131402\n";
 
 void main() async {
+  SharedPreferencesAsyncPlatform.instance =
+      InMemorySharedPreferencesAsync.empty();
   test('Parse', () {
     Day09Solution solution = Day09Solution();
     solution.parse('212');

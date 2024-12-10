@@ -1,57 +1,42 @@
 import 'dart:developer' as dev;
 import 'package:adventofcode2024/data.dart';
 import 'package:http/http.dart' as http;
+import 'package:html/parser.dart' as html;
 
-Future<String?> fetchPuzzleData(int year, int day) async {
-  // Check for cached data
-  var data = await prefs.getString('$year$day');
+Future<String?> getPuzzleDataFromInternet(int year, int day) async {
+  dev.log("Retrieving puzzle data from the internet.");
 
-  if (data == null) {
-    // If not present, get it
-    dev.log("Retrieving data from the internet.");
-    var cookie = await prefs.getString('session');
-    Map<String, String> headers = {};
-    headers['Cookie'] = cookie ?? '';
-    var response = await http.get(
-        Uri.parse('https://adventofcode.com/$year/day/$day/input'),
-        headers: headers);
-    // Save data in cache if successful
-    if (response.statusCode == 200) {
-      dev.log("Updating cache.");
-      data = response.body;
-      await prefs.setString('$year$day', data);
-    } else {
-      dev.log("Error retrieving data.");
-    }
-  } else {
-    dev.log("Data retrieved from cache.");
+  var cookie = await prefs.getString('session');
+  Map<String, String> headers = {};
+  headers['Cookie'] = cookie ?? '';
+
+  var response = await http.get(
+      Uri.parse('https://adventofcode.com/$year/day/$day/input'),
+      headers: headers);
+
+  if (response.statusCode == 200) {
+    return response.body;
   }
-  return data;
+
+  dev.log("Error retrieving puzzle data.");
+  return null;
 }
 
-Future<String?> fetchPuzzle(int year, int day) async {
-  // Check for cached data
-  var data = await prefs.getString('$year${day}_puzzle');
+Future<String?> getPuzzleTextFromInternet(int year, int day) async {
+  dev.log("Retrieving puzzle text from the internet.");
 
-  if (data == null) {
-    // If not present, get it
-    dev.log("Retrieving data from the internet.");
-    var cookie = await prefs.getString('session');
-    Map<String, String> headers = {};
-    headers['Cookie'] = cookie ?? '';
-    var response = await http.get(
-        Uri.parse('https://adventofcode.com/$year/day/$day'),
-        headers: headers);
-    // Save data in cache if successful
-    if (response.statusCode == 200) {
-      dev.log("Updating cache.");
-      data = response.body;
-      await prefs.setString('$year${day}_puzzle', data);
-    } else {
-      dev.log("Error retrieving data.");
-    }
-  } else {
-    dev.log("Data retrieved from cache.");
+  var cookie = await prefs.getString('session');
+  Map<String, String> headers = {};
+  headers['Cookie'] = cookie ?? '';
+
+  var response = await http.get(
+      Uri.parse('https://adventofcode.com/$year/day/$day'),
+      headers: headers);
+
+  if (response.statusCode == 200) {
+    return html.parse(response.body).body?.querySelector('main')?.text ?? '';
   }
-  return data;
+
+  dev.log("Error retrieving puzzle text.");
+  return null;
 }

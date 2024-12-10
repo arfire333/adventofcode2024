@@ -1,29 +1,11 @@
-import 'package:adventofcode2024/data.dart' as puzzle_data;
-import 'package:html/parser.dart' as html;
+import 'package:adventofcode2024/mixins/solution.dart';
 
-class Day08Solution {
-  String puzzleText = '';
-  bool dataIsValid = false;
-  String answer1 = 'tbd';
-  String answer2 = 'tbd';
+class Day08Solution with Solution {
   List<List<String>> puzzle = [];
   List<List<int>> antinodes = [];
   Map<String, Set<(int r, int c)>> antennas = {};
 
-  Future<void> fetchData(int year, int day) async {
-    var rawData = await puzzle_data.fetchPuzzleData(year, day);
-    var rawPuzzle = await puzzle_data.fetchPuzzle(year, day) ?? '';
-
-    puzzleText = html.parse(rawPuzzle).body?.querySelector('main')?.text ?? '';
-
-    if (rawData == null) {
-      answer1 = 'Error getting data.';
-      answer2 = 'Error getting data.';
-      return;
-    }
-    parse(rawData);
-  }
-
+  @override
   void parse(String rawData) {
     // Don't forget to clear data
     var lines = rawData.split('\n');
@@ -90,6 +72,7 @@ class Day08Solution {
     }
   }
 
+  @override
   void part1() {
     antennas.forEach((freq, loc) {
       // Each pair can have two antinodes
@@ -117,6 +100,7 @@ class Day08Solution {
     answer1 = '$answer';
   }
 
+  @override
   void part2() {
     antennas.forEach((freq, loc) {
       // Each pair can have two antinodes
@@ -137,8 +121,13 @@ class Day08Solution {
         }
       }
     }
-    puzzle_data.printPuzzle(antinodes);
 
     answer2 = '$answer';
   }
+
+  @override
+  int get day => 8;
+
+  @override
+  int get year => 2024;
 }

@@ -1,23 +1,9 @@
-import 'package:adventofcode2024/data.dart' as puzzle_data;
+import 'package:adventofcode2024/mixins/solution.dart';
 
-class Day02Solution {
-  bool dataIsValid = false;
-  String answer1 = 'tbd';
-  String answer2 = 'tbd';
-
+class Day02Solution with Solution {
   List<List<int>> reports = List<List<int>>.empty(growable: true);
 
-  Future<void> fetchData(int year, int day) async {
-    var rawData = await puzzle_data.fetchPuzzleData(year, day);
-
-    if (rawData == null) {
-      answer1 = 'Error getting data.';
-      answer2 = 'Error getting data.';
-      return;
-    }
-    parse(rawData);
-  }
-
+  @override
   void parse(String rawData) {
     // Don't forget to clear data
     reports.clear();
@@ -39,6 +25,7 @@ class Day02Solution {
     dataIsValid = true;
   }
 
+  @override
   void part1() {
     int safeCount = 0;
 
@@ -68,6 +55,7 @@ class Day02Solution {
     answer1 = '$safeCount';
   }
 
+  @override
   void part2() {
     int safeCount = 0;
 
@@ -113,4 +101,10 @@ class Day02Solution {
 
     return result;
   }
+
+  @override
+  int get day => 2;
+
+  @override
+  int get year => 2024;
 }

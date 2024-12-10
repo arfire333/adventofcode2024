@@ -1,30 +1,10 @@
-import 'package:adventofcode2024/data.dart' as puzzle_data;
-import 'package:html/parser.dart' as html;
+import 'package:adventofcode2024/mixins/solution.dart';
 
-class Day04Solution {
+class Day04Solution with Solution {
   List<String> puzzle = List<String>.empty(growable: true);
-  String puzzleText = '';
-
-  bool dataIsValid = false;
-  String answer1 = 'tbd';
-  String answer2 = 'tbd';
   List<String> lines = List<String>.empty(growable: true);
 
-  Future<void> fetchData(int year, int day) async {
-    var rawData = await puzzle_data.fetchPuzzleData(year, day);
-    var rawPuzzle = await puzzle_data.fetchPuzzle(year, day) ?? '';
-
-    puzzleText = html.parse(rawPuzzle).body?.querySelector('main')?.text ?? '';
-
-    if (rawData == null) {
-      answer1 = 'Error getting data.';
-      answer2 = 'Error getting data.';
-      return;
-    }
-
-    parse(rawData);
-  }
-
+  @override
   void parse(String rawData) {
     // Don't forget to clear data
     puzzle = rawData.split('\n');
@@ -77,6 +57,7 @@ class Day04Solution {
     return count;
   }
 
+  @override
   void part1() {
     int answer = 0;
 
@@ -130,6 +111,7 @@ class Day04Solution {
     return (count == 2 ? 1 : 0);
   }
 
+  @override
   void part2() {
     int answer = 0;
     for (int row = 0; row < puzzle.length; row++) {
@@ -139,4 +121,10 @@ class Day04Solution {
     }
     answer2 = '$answer';
   }
+
+  @override
+  int get day => 4;
+
+  @override
+  int get year => 2024;
 }

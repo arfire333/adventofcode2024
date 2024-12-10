@@ -1,7 +1,7 @@
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:adventofcode2024/solutions/day06_solution.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences_platform_interface/shared_preferences_async_platform_interface.dart';
+import 'package:shared_preferences_platform_interface/in_memory_shared_preferences_async.dart';
 
 String rawData = "....#.....\n"
     ".........#\n"
@@ -39,6 +39,9 @@ var moveTest = '.#........\n'
 int answer2 = 2;
 
 void main() async {
+  SharedPreferencesAsyncPlatform.instance =
+      InMemorySharedPreferencesAsync.empty();
+
   test('Part 1', () async {
     Day06Solution solution = Day06Solution();
     solution.parse(rawData);

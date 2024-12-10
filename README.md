@@ -10,9 +10,12 @@ Flutter solutions for Advent of Code 2024.  Visualizations will be made as time 
 - Open the drawer and click on the elf.
 - Enter your session cooking in the text box then press.
 - Return to the drawer and select the day you wish to see.
-- Click the play button to get the results.
-- The trash can's will erase the puzzle data and puzzle description respectively.
+- Click the play button to download (or input) the data and get the results.
+- The trash can will erase the puzzle data and puzzle text.
+- The refresh button will download the latest puzzle text.
 
 ## Notes
-- While written in flutter, it has only been tested successfuly on Windows and Android.  It fails to run on the web.  At least via VSCode.  This appears to be because of Cross-Origin Resource Sharing (CORS) when trying to get the puzzle input data but has not been confirmed.
+- Web version requires manually inputting your data when prompted.
+
 - Code is not necessarily _production_ ready.  Some days are better than others.  Recommendations for improvements are welcome.
+- Day 6 Takes a while
