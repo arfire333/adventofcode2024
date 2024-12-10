@@ -7,6 +7,8 @@ import 'package:adventofcode2024/pages/day_06.dart';
 import 'package:adventofcode2024/pages/day_07.dart';
 import 'package:adventofcode2024/pages/day_08.dart';
 import 'package:adventofcode2024/pages/day_09.dart';
+import 'package:adventofcode2024/pages/day_10.dart';
+// Add new import here
 import 'package:adventofcode2024/pages/settings.dart';
 import 'package:adventofcode2024/pages/template.dart';
 import 'package:adventofcode2024/common.dart' as strings;
@@ -76,7 +78,9 @@ class _AOCWidget2024State extends State<AOCWidget2024> {
       const Day06Widget(),
       const Day07Widget(),
       const Day08Widget(),
-      const Day09Widget()
+      const Day09Widget(),
+      const Day10Widget(),
+      // Add new day here
     ];
     final inversePrimary = Theme.of(context).colorScheme.inversePrimary;
     return Scaffold(

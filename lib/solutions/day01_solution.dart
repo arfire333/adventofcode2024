@@ -1,25 +1,12 @@
-import 'package:adventofcode2024/data.dart' as puzzle_data;
+import 'package:adventofcode2024/mixins/solution.dart';
 
-class Day01Solution {
-  bool dataIsValid = false;
-  String answer1 = 'tbd';
-  String answer2 = 'tbd';
+class Day01Solution with Solution {
   List<int> left = List<int>.empty(growable: true);
   List<int> right = List<int>.empty(growable: true);
   List<int> sortedLeft = List<int>.empty(growable: true);
   List<int> sortedRight = List<int>.empty(growable: true);
 
-  Future<void> fetchData(int year, int day) async {
-    var rawData = await puzzle_data.fetchPuzzleData(year, day);
-
-    if (rawData == null) {
-      answer1 = 'Error getting data.';
-      answer2 = 'Error getting data.';
-      return;
-    }
-    parse(rawData);
-  }
-
+  @override
   void parse(String rawData) {
     // Don't forget to clear data
     left.clear();
@@ -41,6 +28,7 @@ class Day01Solution {
     dataIsValid = true;
   }
 
+  @override
   void part1() {
     sortedLeft = List<int>.from(left);
     sortedLeft.sort();
@@ -57,6 +45,7 @@ class Day01Solution {
     answer1 = '$sum';
   }
 
+  @override
   void part2() {
     // This is only correct because the left column of
     // my data was unique.  It does not work with the
@@ -80,4 +69,10 @@ class Day01Solution {
 
     answer2 = '$total';
   }
+
+  @override
+  int get day => 1;
+
+  @override
+  int get year => 2024;
 }
