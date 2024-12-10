@@ -1,5 +1,7 @@
 import 'package:adventofcode2024/solutions/day03_solution.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences_platform_interface/shared_preferences_async_platform_interface.dart';
+import 'package:shared_preferences_platform_interface/in_memory_shared_preferences_async.dart';
 
 String rawData1 =
     "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))";
@@ -19,6 +21,8 @@ String rawData2Custom = "mul(1,1)do()mul(1,1)don't()mul(1,1)\n"
     "mul(1,1)do()mul(1,1)don't()mul(1,1)\n";
 
 void main() async {
+  SharedPreferencesAsyncPlatform.instance =
+      InMemorySharedPreferencesAsync.empty();
   test('Part 2custom', () async {
     Day03Solution solution = Day03Solution();
     solution.parse(rawData2Custom);

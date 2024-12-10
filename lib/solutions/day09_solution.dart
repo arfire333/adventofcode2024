@@ -1,31 +1,12 @@
 import 'dart:collection';
+import 'package:adventofcode2024/mixins/solution.dart';
 
-import 'package:adventofcode2024/data.dart' as puzzle_data;
-import 'package:html/parser.dart' as html;
-
-class Day09Solution {
-  String puzzleText = '';
+class Day09Solution with Solution {
   Queue<(int, int, String)> initialFiles = Queue();
   List<(int, int)> initialFreeSpace = [];
   List<String> puzzleData = [];
-  bool dataIsValid = false;
-  String answer1 = 'tbd';
-  String answer2 = 'tbd';
 
-  Future<void> fetchData(int year, int day) async {
-    var rawData = await puzzle_data.fetchPuzzleData(year, day);
-    var rawPuzzle = await puzzle_data.fetchPuzzle(year, day) ?? '';
-
-    puzzleText = html.parse(rawPuzzle).body?.querySelector('main')?.text ?? '';
-
-    if (rawData == null) {
-      answer1 = 'Error getting data.';
-      answer2 = 'Error getting data.';
-      return;
-    }
-    parse(rawData);
-  }
-
+  @override
   void parse(String rawData) {
     var lines = rawData.split('\n');
     // Don't forget to clear data
@@ -66,6 +47,7 @@ class Day09Solution {
     return sum;
   }
 
+  @override
   void part1() {
     var puzzle = List<String>.from(puzzleData);
     Queue<int> empties = Queue();
@@ -96,6 +78,7 @@ class Day09Solution {
     answer1 = '${checksum(puzzle)}';
   }
 
+  @override
   void part2() {
     var puzzle = List<String>.from(puzzleData);
     var freeSpace = List<(int, int)>.from(initialFreeSpace);
@@ -130,4 +113,10 @@ class Day09Solution {
 
     answer2 = '${checksum(puzzle)}';
   }
+
+  @override
+  int get day => 9;
+
+  @override
+  int get year => 2024;
 }

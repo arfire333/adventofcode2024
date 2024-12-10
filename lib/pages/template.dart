@@ -1,9 +1,5 @@
 import 'package:adventofcode2024/solutions/template_solution.dart';
 import 'package:flutter/material.dart';
-import 'package:adventofcode2024/data.dart' as puzzle_data;
-
-const int year = 2024;
-const int day = 0;
 
 class TemplateWidget extends StatefulWidget {
   const TemplateWidget({
@@ -17,34 +13,51 @@ class TemplateWidget extends StatefulWidget {
 class _TemplateWidgetState extends State<TemplateWidget> {
   TemplateSolution data = TemplateSolution();
 
-  Future<void> runSolution() async {
-    await data.fetchData(year, day);
-    if (data.dataIsValid) {
+  Future<void> runSolution(context) async {
+    if (await data.getPuzzleData(context)) {
       data.part1();
       data.part2();
     }
-    setState(() => data = data);
+
+    await data.getPuzzleText();
+    setState(() {
+      // Data is updated
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      const Text('Day $day', textScaler: TextScaler.linear(1.5)),
+      Text('Day ${data.day}', textScaler: const TextScaler.linear(1.5)),
       Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         const Text('Part 1: '),
         SelectableText(data.answer1),
         IconButton(
             icon: const Icon(Icons.play_arrow),
-            onPressed: () => runSolution(),
-            tooltip: 'Run Solution'),
+            onPressed: () {
+              runSolution(context);
+            },
+            tooltip: 'Run solution'),
         IconButton(
             icon: const Icon(Icons.delete),
-            onPressed: () => puzzle_data.erasePuzzleData(year, day),
+            onPressed: () {
+              data.erasePuzzleData();
+              data.erasePuzzleText();
+              setState(() {
+                // Cleared puzzle from data
+              });
+            },
             tooltip: 'Delete cached data'),
         IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: () => puzzle_data.erasePuzzle(year, day),
-            tooltip: 'Delete puzzle text'),
+            icon: const Icon(Icons.refresh),
+            onPressed: () async {
+              await data.erasePuzzleText();
+              await data.getPuzzleText();
+              setState(() {
+                // Pulled new Puzzle text
+              });
+            },
+            tooltip: 'Refresh puzzle text'),
         const Text('Part 2: '),
         SelectableText(data.answer2),
       ]),

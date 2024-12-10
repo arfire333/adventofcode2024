@@ -33,6 +33,7 @@ fi
 
 cp lib/solutions/template_solution.dart $SOLUTION_FILE
 sed -i s/Template/$SOLUTION_NAME/ $SOLUTION_FILE
+sed -i s/"int get day => 0;"/"int get day => $1;"/ $SOLUTION_FILE
 
 # Page Template
 PAGE_NAME="Day${1}"
@@ -55,7 +56,6 @@ fi
 cp lib/pages/template.dart $PAGE_FILE
 sed -i s/Template/$PAGE_NAME/g $PAGE_FILE
 sed -i s/template/$PAGE_SOLUTION_FILENAME/g $PAGE_FILE
-sed -i s/"const int day = 0;"/"const int day = $1;"/ $PAGE_FILE
 #
 # Test Template
 PAGE_NAME="Day${1}"
@@ -78,3 +78,10 @@ fi
 cp test/solutions/template_solution_test.dart $PAGE_FILE
 sed -i s/Template/$PAGE_NAME/g $PAGE_FILE
 sed -i s/template/$PAGE_SOLUTION_FILENAME/g $PAGE_FILE
+
+# Main update
+WIDGET_PACKAGE_IMPORT="import 'package:adventofcode2024/pages/day_${1}.dart';";
+WIDGET_INSTANTIATION="      const Day${1}Widget(),"
+MAIN_FILE="lib/main.dart"
+sed -i "s|\(// Add new import here\)|$WIDGET_PACKAGE_IMPORT\\n\1|g" $MAIN_FILE
+sed -i "s|\(      // Add new day here\)|$WIDGET_INSTANTIATION\\n\1|g" $MAIN_FILE

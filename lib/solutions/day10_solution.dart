@@ -1,11 +1,11 @@
 import 'package:adventofcode2024/mixins/solution.dart';
 
-class TemplateSolution with Solution {
+class Day10Solution with Solution {
   @override
   int get year => 2024;
 
   @override
-  int get day => 0;
+  int get day => 10;
 
   @override
   void parse(String rawData) {
