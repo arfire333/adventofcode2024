@@ -60,7 +60,8 @@ class AOCWidget2024 extends StatefulWidget {
 class _AOCWidget2024State extends State<AOCWidget2024> {
   final SharedPreferencesAsync prefs = SharedPreferencesAsync();
 
-  Widget _panel = const TemplateWidget();
+  // Widget _panel = const TemplateWidget();
+  Widget _panel = const Day10Widget();
 
   @override
   void initState() {
