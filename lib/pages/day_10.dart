@@ -1,3 +1,4 @@
+import 'package:adventofcode2024/common.dart';
 import 'package:adventofcode2024/solutions/day10_solution.dart';
 import 'package:flutter/material.dart';
 
@@ -10,8 +11,48 @@ class Day10Widget extends StatefulWidget {
   State<Day10Widget> createState() => _Day10WidgetState();
 }
 
-class _Day10WidgetState extends State<Day10Widget> {
+class _Day10WidgetState extends State<Day10Widget>
+    with SingleTickerProviderStateMixin {
   Day10Solution data = Day10Solution();
+  late AnimationController _controller;
+
+  int frame = 0;
+  double position = 0.0;
+  bool forward = true;
+
+  @override
+  void initState() {
+    super.initState();
+    frame = 0;
+    _controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      reverseDuration: const Duration(seconds: 1),
+      vsync: this,
+    );
+    _controller.repeat(reverse: true);
+    // TODO: This isn't quite right.
+    _controller.addListener(() {
+      setState(() {
+        position += (forward ? 1 : -1);
+        if (position > 100 || position <= 0) {
+          forward = !forward;
+        }
+        position = position % 200;
+        frame = position.toInt() % 4;
+      });
+    });
+    _controller.addStatusListener((status) {
+      if (status.isForwardOrCompleted ^ forward) {
+        setState(() => forward = !forward);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   Future<void> runSolution(context) async {
     if (await data.getPuzzleData(context)) {
@@ -28,7 +69,20 @@ class _Day10WidgetState extends State<Day10Widget> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      Text('Day ${data.day}', textScaler: const TextScaler.linear(1.5)),
+      Stack(
+        children: [
+          Positioned.fill(
+              left: position + 100,
+              child: Transform.flip(flipX: forward, child: elfWalk[frame])),
+          Center(
+            child: Text('Day ${data.day}',
+                textScaler: const TextScaler.linear(1.5)),
+          ),
+          Positioned.fill(
+              left: -position - 100,
+              child: Transform.flip(flipX: !forward, child: elfWalk[frame])),
+        ],
+      ),
       Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         const Text('Part 1: '),
         SelectableText(data.answer1),
