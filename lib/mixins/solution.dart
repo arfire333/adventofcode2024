@@ -39,6 +39,10 @@ mixin Solution {
     return false;
   }
 
+  Future<void> init() async {
+    puzzleText = await prefs.getString('$year${day}_puzzle') ?? '';
+  }
+
   Future<bool> getPuzzleText() async {
     bool textCacheHit = true;
     var rawData = await prefs.getString('$year$day') ?? '';

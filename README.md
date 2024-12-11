@@ -3,6 +3,7 @@ Flutter solutions for Advent of Code 2024.  Visualizations will be made as time 
 
 ## Solutions with visualizations.
 - Day 1 - Very basic proof of concept.
+- Day 10 - Minor animation of elves in the heading unrelated to the specific challenge.
 
 ## Usage
 - Log into Advent of Code via a web browser and obtain a session cookie.
@@ -16,6 +17,5 @@ Flutter solutions for Advent of Code 2024.  Visualizations will be made as time 
 
 ## Notes
 - Web version requires manually inputting your data when prompted.
-
 - Code is not necessarily _production_ ready.  Some days are better than others.  Recommendations for improvements are welcome.
 - Day 6 Takes a while
