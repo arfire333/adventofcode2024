@@ -2,7 +2,10 @@ import 'package:adventofcode2024/mixins/solution.dart';
 
 class Day10Solution with Solution {
   List<List<int>> map = [];
-  Set<(int, int)> trailheads = {};
+  List<List<(int, int)>> trails = [];
+  int currentTic = 0;
+
+  List<(int, int)> trailheads = [];
 
   Day10Solution() {
     init();
@@ -75,7 +78,8 @@ class Day10Solution with Solution {
   @override
   void part1() {
     int count = 0;
-    for (var (r, c) in trailheads) {
+    for (int i = 0; i < trailheads.length; i++) {
+      var (r, c) = trailheads[i];
       Set<(int, int)> destinations = {};
       Set<(int, int)> visited = {}; // direction, row, col
       search(visited, r, c, 0, destinations);
@@ -88,12 +92,70 @@ class Day10Solution with Solution {
   @override
   void part2() {
     int count2 = 0;
-    for (var (r, c) in trailheads) {
+    for (int i = 0; i < trailheads.length; i++) {
+      var (r, c) = trailheads[i];
       Set<(int, int)> path = {};
       Set<(int, int)> visited = {}; // direction, row, col
       count2 += search(visited, r, c, 0, path);
     }
 
     answer2 = '$count2';
+  }
+
+  void start() {
+    trails = [];
+    currentTic = 0;
+    for (int i = 0; i < trailheads.length; i++) {
+      var (r, c) = trailheads[i];
+      Set<(int, int)> destinations = {};
+      Set<(int, int)> visited = {}; // direction, row, col
+      List<(int, int)> currentTrail = [(r, c)]; // direction, row, col
+      stepSearch(visited, r, c, 0, destinations, trails, currentTrail);
+    }
+    print(trails.length);
+  }
+
+  void step() {
+    currentTic++;
+  }
+
+  int stepSearch(
+      Set<(int, int)> visited,
+      int cr,
+      int cc,
+      int targetAlt,
+      Set<(int, int)> destinations,
+      List<List<(int, int)>> trails,
+      List<(int, int)> trail) {
+    var alt = map[cr][cc];
+    if (alt != targetAlt) {
+      return 0;
+    }
+    if (alt == 9) {
+      destinations.add((cr, cc));
+      trail.add((cr, cc));
+      trails.add(trail);
+      return 1;
+    }
+    var result = 0;
+
+    for (int d = 0; d < directions.length; d++) {
+      var nr = cr + directions[d].$1;
+      var nc = cc + directions[d].$2;
+      if (nr < 0 || nr >= map.length || nc < 0 || nc >= map[0].length) {
+        continue;
+      }
+
+      if (!visited.contains((nr, nc))) {
+        var newVisited = Set<(int, int)>.from(visited);
+        newVisited.add((nr, nc));
+        var newTrail = List<(int, int)>.from(trail);
+        newTrail.add((nr, nc));
+        result += stepSearch(
+            newVisited, nr, nc, alt + 1, destinations, trails, newTrail);
+      }
+    }
+
+    return result;
   }
 }
