@@ -110,9 +110,16 @@ class Day10Solution with Solution {
       Set<(int, int)> destinations = {};
       Set<(int, int)> visited = {}; // direction, row, col
       List<(int, int)> currentTrail = [(r, c)]; // direction, row, col
-      stepSearch(visited, r, c, 0, destinations, trails, currentTrail);
+      stepSearch(
+        visited,
+        r,
+        c,
+        0,
+        destinations,
+        trails,
+        currentTrail,
+      );
     }
-    print(trails.length);
   }
 
   void step() {
@@ -152,7 +159,14 @@ class Day10Solution with Solution {
         var newTrail = List<(int, int)>.from(trail);
         newTrail.add((nr, nc));
         result += stepSearch(
-            newVisited, nr, nc, alt + 1, destinations, trails, newTrail);
+          newVisited,
+          nr,
+          nc,
+          alt + 1,
+          destinations,
+          trails,
+          newTrail,
+        );
       }
     }
 

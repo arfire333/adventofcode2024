@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:math';
 import 'dart:ui';
 
@@ -157,6 +156,10 @@ class _Day10Painter extends CustomPainter {
       Offset p1 = Offset(0, i);
       Offset p2 = Offset(size.width, i);
       canvas.drawLine(p1, p2, redLine);
+    }
+
+    if (data.map.isEmpty) {
+      return;
     }
     final List<Paint> paints = [];
     double scale = size.width / (data.map.length);
