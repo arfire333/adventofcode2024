@@ -52,13 +52,11 @@ void main() {
         }
       }
     }
-
-    for (int i = 0; i < solution.groups.length; i++) {
-      if (solution.groups[i] < 0) {
-        int count = -solution.groups[i];
-        print('$count => ${solution.regions[i].id}');
-      }
-    }
+    List<int> answer = [
+      //
+      0, 3, 4, 4, -4, 9, 10, 12, -1, 10, -4, 16, 16, 14, 15, -3, -4
+    ];
+    expect(solution.groups, answer);
   });
 
   test('SplitPlotRegions', () {
@@ -96,29 +94,4 @@ void main() {
     expect(solution.answer2, '368');
     // 846196 to low
   });
-
-  test('Pricing', () {});
-
-  test('Region Tests', () {
-    expect(Region('a', 0, 0).price(), 0);
-    expect(Region('b', 3, 4).price(), 12);
-    // ({int r, int c}) g = (r: 4, c: 2);
-    // ({int r, int c}) b = (r: 4, c: 2);
-    // (int, int) e = (4, 2);
-    // print(e == e ? "true" : "false");
-    // print(g == e ? "true" : "false");
-    // print(g == b ? "true" : "false");
-    // var (:r, :c) = g;
-    // print('$r , $c');
-
-    var (a, b, c) = returnRecord();
-    print('$a $b $c');
-
-    var d = returnRecord();
-    print('${d.$1}  ${d.$2}  ${d.$3}');
-  });
-}
-
-(int, int, String) returnRecord() {
-  return (3, 4, 'Dog');
 }
