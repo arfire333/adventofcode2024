@@ -5,18 +5,18 @@ import 'package:shared_preferences_platform_interface/in_memory_shared_preferenc
 
 String rawData = r"";
 
-void main() async {
+void main() {
   SharedPreferencesAsyncPlatform.instance =
       InMemorySharedPreferencesAsync.empty();
 
-  test('Part 1', () async {
+  test('Part 1', () {
     TemplateSolution solution = TemplateSolution();
     solution.parse(rawData);
     solution.part1();
     expect(solution.answer1, 'ranit');
   });
 
-  test('Part 2', () async {
+  test('Part 2', () {
     TemplateSolution solution = TemplateSolution();
     solution.parse(rawData);
     solution.part2();
