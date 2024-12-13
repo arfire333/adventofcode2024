@@ -5,12 +5,7 @@ class Region {
   String id = '';
   int r = 0;
   int c = 0;
-  int a = -1;
-  int p = -1;
   Region(this.id, this.r, this.c);
-  int price() {
-    return a * p;
-  }
 }
 
 class Day12Solution with Solution {
