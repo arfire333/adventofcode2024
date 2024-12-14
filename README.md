@@ -4,6 +4,7 @@ Flutter solutions for Advent of Code 2024.  Visualizations will be made as time 
 ## Solutions with visualizations.
 - Day 1 - Very basic proof of concept.
 - Day 10 - Animated paths in the background of the description.
+- Day 14 - Simple animation showing search for the easter egg.
 
 ## Usage
 - Log into Advent of Code via a web browser and obtain a session cookie.
