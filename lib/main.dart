@@ -12,6 +12,7 @@ import 'package:adventofcode2024/pages/day_11.dart';
 import 'package:adventofcode2024/pages/day_12.dart';
 import 'package:adventofcode2024/pages/day_13.dart';
 import 'package:adventofcode2024/pages/day_14.dart';
+import 'package:adventofcode2024/pages/day_15.dart';
 // Add new import here
 import 'package:adventofcode2024/pages/settings.dart';
 import 'package:adventofcode2024/pages/template.dart';
@@ -64,7 +65,7 @@ class _AOCWidget2024State extends State<AOCWidget2024> {
   final SharedPreferencesAsync prefs = SharedPreferencesAsync();
 
   // Widget _panel = const TemplateWidget();
-  Widget _panel = const Day10Widget();
+  Widget _panel = const Day13Widget();
 
   @override
   void initState() {
@@ -89,6 +90,7 @@ class _AOCWidget2024State extends State<AOCWidget2024> {
       const Day12Widget(),
       const Day13Widget(),
       const Day14Widget(),
+      const Day15Widget(),
       // Add new day here
     ];
     final inversePrimary = Theme.of(context).colorScheme.inversePrimary;
@@ -134,7 +136,7 @@ class _AOCWidget2024State extends State<AOCWidget2024> {
                 Navigator.pop(context);
               }),
       ])),
-      body: Center(child: _panel),
+      body: SafeArea(child: Center(child: _panel)),
     );
   }
 }
