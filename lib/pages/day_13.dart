@@ -47,13 +47,20 @@ class _Day13WidgetState extends State<Day13Widget>
       lastTic = tic;
       setState(() {});
     });
-    _ac.repeat(period: Duration(seconds: 1));
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    _ac.repeat(period: const Duration(seconds: 1));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         boardSize = getBoardSize(boardKey.currentContext!);
         resetGame();
       });
     });
+  }
+
+  @override
+  void dispose() {
+    _ac.dispose();
+
+    super.dispose();
   }
 
   void aPress(double change) {
@@ -153,10 +160,10 @@ class _Day13WidgetState extends State<Day13Widget>
         ),
         Text('   $score   '),
         ElevatedButton.icon(
-          label: Text('Reset Score'),
+          label: const Text('Reset Score'),
           onPressed: () {
             setState(() {
-              score = 0;
+              score = 100;
             });
           },
           iconAlignment: IconAlignment.end,
@@ -165,7 +172,7 @@ class _Day13WidgetState extends State<Day13Widget>
       ]),
       Flexible(
         child: Container(
-          margin: const EdgeInsets.all(10),
+          margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20), color: Colors.blue),
           padding: const EdgeInsets.all(5.0),
@@ -198,68 +205,6 @@ class _Day13WidgetState extends State<Day13Widget>
                                 SizeChangedLayoutNotifier(child: Container()),
                           ),
                         ),
-                        Center(
-                          child: Row(
-                            key: rowKey,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              GestureDetector(
-                                onTapDown: (_) {
-                                  setState(() {
-                                    score -= 3;
-                                    aPressed = true;
-                                  });
-                                },
-                                child: CircleButton(
-                                  'A',
-                                  onPressed: () {
-                                    Future.delayed(
-                                        Duration(milliseconds: r.nextInt(1000)),
-                                        () {
-                                      setState(() {
-                                        aPressed = false;
-                                      });
-                                    });
-                                  },
-                                  color: Colors.redAccent.shade700,
-                                  backgroundColor: Colors.green.shade900,
-                                ),
-                              ),
-                              CircleButton(
-                                'C',
-                                onPressed: () {
-                                  if (aPressed || bPressed) {
-                                    return;
-                                  }
-                                  calcScore();
-                                  setState(() {});
-                                },
-                              ),
-                              GestureDetector(
-                                onTapDown: (_) {
-                                  setState(() {
-                                    score -= 1;
-                                    bPressed = true;
-                                  });
-                                },
-                                child: CircleButton(
-                                  'B',
-                                  onPressed: () {
-                                    Future.delayed(
-                                        Duration(milliseconds: r.nextInt(1000)),
-                                        () {
-                                      setState(() {
-                                        bPressed = false;
-                                      });
-                                    });
-                                  },
-                                  color: Colors.green.shade900,
-                                  backgroundColor: Colors.redAccent.shade700,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
                       ],
                     ),
                     Positioned(
@@ -284,6 +229,63 @@ class _Day13WidgetState extends State<Day13Widget>
             ),
           ),
         ),
+      ),
+      Row(
+        key: rowKey,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          GestureDetector(
+            onTapDown: (_) {
+              setState(() {
+                score -= 2;
+                aPressed = true;
+              });
+            },
+            child: CircleButton(
+              '⇨',
+              onPressed: () {
+                Future.delayed(Duration(milliseconds: r.nextInt(999)), () {
+                  setState(() {
+                    aPressed = false;
+                  });
+                });
+              },
+              color: Colors.redAccent.shade700,
+              backgroundColor: Colors.green.shade900,
+            ),
+          ),
+          CircleButton(
+            '🎁',
+            backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+            onPressed: () {
+              if (aPressed || bPressed) {
+                return;
+              }
+              calcScore();
+              setState(() {});
+            },
+          ),
+          GestureDetector(
+            onTapDown: (_) {
+              setState(() {
+                score -= 0;
+                bPressed = true;
+              });
+            },
+            child: CircleButton(
+              '⇩',
+              onPressed: () {
+                Future.delayed(Duration(milliseconds: r.nextInt(999)), () {
+                  setState(() {
+                    bPressed = false;
+                  });
+                });
+              },
+              color: Colors.green.shade900,
+              backgroundColor: Colors.redAccent.shade700,
+            ),
+          )
+        ],
       ),
     ]);
   }
@@ -340,21 +342,21 @@ class CircleButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      style: ButtonStyle(
-        alignment: Alignment.center,
-        backgroundColor: WidgetStatePropertyAll(backgroundColor),
-        shape: const WidgetStatePropertyAll(CircleBorder()),
-        fixedSize: const WidgetStatePropertyAll(Size.fromRadius(50)),
+      style: const ButtonStyle(
+        shape: WidgetStatePropertyAll(CircleBorder()),
       ),
       onPressed: () => onPressed(),
-      child: Text(
-        label,
-        textScaler: const TextScaler.linear(5),
-        style: TextStyle(
-            color: color,
-            fontWeight: FontWeight.bold,
-            fontFamily: GoogleFonts.aBeeZee.toString()),
-        textAlign: TextAlign.center,
+      child: Align(
+        alignment: Alignment.center,
+        child: Text(
+          label,
+          textScaler: const TextScaler.linear(3),
+          style: TextStyle(
+              color: color,
+              fontWeight: FontWeight.bold,
+              fontFamily: GoogleFonts.aBeeZee.toString()),
+          textAlign: TextAlign.center,
+        ),
       ),
     );
   }
