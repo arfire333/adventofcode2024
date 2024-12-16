@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:adventofcode2024/solutions/day15_solution.dart';
 import 'package:flutter/material.dart';
 
@@ -10,19 +12,43 @@ class Day15Widget extends StatefulWidget {
   State<Day15Widget> createState() => _Day15WidgetState();
 }
 
-class _Day15WidgetState extends State<Day15Widget> {
+class _Day15WidgetState extends State<Day15Widget>
+    with SingleTickerProviderStateMixin {
   Day15Solution data = Day15Solution();
+  late AnimationController _ac;
 
   Future<void> runSolution(context) async {
     if (await data.getPuzzleData(context)) {
       data.part1();
       data.part2();
+      data.reset();
     }
 
     await data.getPuzzleText();
     setState(() {
       // Data is updated
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _ac = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+
+    _ac.addListener(() {
+      data.step();
+      setState(() {});
+    });
+    _ac.repeat();
+  }
+
+  @override
+  void dispose() {
+    _ac.dispose();
+    super.dispose();
   }
 
   @override
@@ -62,14 +88,17 @@ class _Day15WidgetState extends State<Day15Widget> {
         SelectableText(data.answer2),
       ]),
       Flexible(
-        child: CustomPaint(
-          painter: _Day15Painter(data),
-          child: FractionallySizedBox(
-            widthFactor: 1.0,
-            heightFactor: 1.0,
-            child: SingleChildScrollView(
-              child: SelectableText(
-                data.puzzleText,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: CustomPaint(
+              painter: _Day15Painter(data),
+              child: const FractionallySizedBox(
+                widthFactor: 1.0,
+                heightFactor: 1.0,
+                child: SingleChildScrollView(
+                  child: SelectableText(''),
+                ),
               ),
             ),
           ),
@@ -105,10 +134,66 @@ class _Day15Painter extends CustomPainter {
       Offset p2 = Offset(size.width, i);
       canvas.drawLine(p1, p2, redLine);
     }
+    if (data.wideBoard.isEmpty) {
+      return;
+    }
+
+    double hscale = size.width / (data.wideBoard[0].length);
+    double vscale = size.height / (data.wideBoard.length);
+    double scale = hscale;
+
+    bool hshift = true;
+    if (vscale < hscale) {
+      scale = vscale;
+    }
+
+    final wallPaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = scale
+      ..color = Colors.green.shade900;
+
+    final boxPaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = scale
+      ..color = const Color.fromARGB(255, 207, 190, 132);
+
+    final elfPaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = scale
+      ..color = Colors.red;
+
+    List<Offset> boxPoints = [];
+    List<Offset> wallPoints = [];
+    Offset elfPoint = toOffset(
+      scale,
+      data.wideRobot.r,
+      data.wideRobot.c,
+    );
+    for (int r = 0; r < data.wideBoard.length; r++) {
+      for (int c = 0; c < data.wideBoard[0].length; c++) {
+        if (data.wideBoard[r][c] == '[' || data.wideBoard[r][c] == ']') {
+          boxPoints.add(toOffset(scale, r, c));
+        }
+        if (data.wideBoard[r][c] == '#') {
+          wallPoints.add(toOffset(scale, r, c));
+        }
+      }
+    }
+    if (hshift) {
+      var shift = size.width - data.wideBoard[0].length * scale + scale / 2;
+      canvas.translate(shift / 2 - 1, 0);
+    }
+    canvas.drawPoints(PointMode.points, boxPoints, boxPaint);
+    canvas.drawPoints(PointMode.points, wallPoints, wallPaint);
+    canvas.drawPoints(PointMode.points, [elfPoint], elfPaint);
+  }
+
+  Offset toOffset(double scale, int row, int col) {
+    return Offset(col * scale + scale / 2, row * scale + scale / 2);
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
+    return true;
   }
 }

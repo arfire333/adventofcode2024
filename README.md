@@ -4,7 +4,9 @@ Flutter solutions for Advent of Code 2024.  Visualizations will be made as time 
 ## Solutions with visualizations.
 - Day 1 - Very basic proof of concept.
 - Day 10 - Animated paths in the background of the description.
+- Day 13 - Working game (IP) of claw.
 - Day 14 - Simple animation showing search for the easter egg.
+- Day 15 - Repeating loop of box movements.
 
 ## Usage
 - Log into Advent of Code via a web browser and obtain a session cookie.
@@ -20,3 +22,4 @@ Flutter solutions for Advent of Code 2024.  Visualizations will be made as time 
 - Web version requires manually inputting your data when prompted.
 - Code is not necessarily _production_ ready.  Some days are better than others.  Recommendations for improvements are welcome.
 - Day 6 Takes a while
+- Day 13 claw game still needs scoring added.

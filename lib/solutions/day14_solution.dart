@@ -79,8 +79,8 @@ class Day14Solution with Solution {
     int q2 = 0;
     int q3 = 0;
     int q4 = 0;
-    int xb = (w / 2).toInt();
-    int yb = (h / 2).toInt();
+    int xb = w ~/ 2;
+    int yb = h ~/ 2;
     for (var robot in robots) {
       int x = robot.x;
       int y = robot.y;

@@ -15,6 +15,18 @@ String smallData = "########\n"
     "\n"
     "<^^>>>vv<v>>v<<\n";
 
+String small2Data = "#######\n"
+    "#...#.#\n"
+    "#.....#\n"
+    "#..OO@#\n"
+    "#..O..#\n"
+    "#.....#\n"
+    "#######\n"
+    "\n"
+    "<vv<<^^<<^^\n";
+
+String small2Answer = '618';
+
 String bigAnswer = '10092';
 String bigData = "##########\n"
     "#..O..O.O#\n"
@@ -42,8 +54,13 @@ void main() {
   SharedPreferencesAsyncPlatform.instance =
       InMemorySharedPreferencesAsync.empty();
   test('Parse', () {
-    Day15Solution solution = Day15Solution();
-    solution.parse(bigData);
+    Day15Solution s = Day15Solution();
+    s.parse(bigData);
+    expect(s.originalBoard.length, 10);
+    expect(s.originalBoard[0].length, 10);
+    expect(s.movements.length, 700);
+    expect(s.originalRobot.r, 4);
+    expect(s.originalRobot.c, 4);
   });
 
   test('Part 1 Small', () {
@@ -60,10 +77,43 @@ void main() {
     expect(solution.answer1, bigAnswer);
   });
 
+  test('Part 2 Small', () {
+    Day15Solution solution = Day15Solution();
+    solution.parse(small2Data);
+    solution.reset();
+    solution.part2();
+    expect(solution.answer2, small2Answer);
+  });
   test('Part 2', () {
     Day15Solution solution = Day15Solution();
     solution.parse(bigData);
+    solution.reset();
     solution.part2();
-    expect(solution.answer2, 'ran 2');
+    expect(solution.answer2, '9021');
+    // 778529 to low
+    // 1542149 to high
+    // 1549442
+  });
+  test('Part 2 Test Error', () {
+    Day15Solution solution = Day15Solution();
+    solution.parse(testError);
+    solution.reset();
+    solution.part2();
+    expect(solution.answer2, testAnswer);
   });
 }
+
+String testError = "#######\n"
+    "#..O..#\n"
+    "#.#.O@#\n"
+    "#...O.#\n"
+    "#..OOO#\n"
+    "#..O#.#\n"
+    "#..O..#\n"
+    "#.....#\n"
+    "#..#..#\n"
+    "#######\n"
+    "\n"
+    "v<>^<<v\n";
+
+String testAnswer = '2955';
