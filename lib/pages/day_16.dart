@@ -1,34 +1,22 @@
-import 'dart:ui';
-
-import 'package:adventofcode2024/solutions/day14_solution.dart';
+import 'package:adventofcode2024/solutions/day16_solution.dart';
 import 'package:flutter/material.dart';
 
-class Day14Widget extends StatefulWidget {
-  const Day14Widget({
+class Day16Widget extends StatefulWidget {
+  const Day16Widget({
     super.key,
   });
 
   @override
-  State<Day14Widget> createState() => _Day14WidgetState();
+  State<Day16Widget> createState() => _Day16WidgetState();
 }
 
-class _Day14WidgetState extends State<Day14Widget>
-    with SingleTickerProviderStateMixin {
-  Day14Solution data = Day14Solution();
+class _Day16WidgetState extends State<Day16Widget> {
+  Day16Solution data = Day16Solution();
 
-  late AnimationController _ac;
-  int step = 0;
-  int stepIncrement = 1;
-  int counter = 0;
-  double score = 0;
   Future<void> runSolution(context) async {
     if (await data.getPuzzleData(context)) {
       data.part1();
-      data.resetData();
-      step = 0;
-      counter = 0;
-
-      _ac.repeat(period: const Duration(milliseconds: 100));
+      data.part2();
     }
 
     await data.getPuzzleText();
@@ -38,38 +26,10 @@ class _Day14WidgetState extends State<Day14Widget>
   }
 
   @override
-  void initState() {
-    super.initState();
-    _ac = AnimationController(vsync: this);
-
-    _ac.addListener(() {
-      step++;
-      if (step % stepIncrement == 0) {
-        counter++;
-
-        data.step();
-        var (q1, q2, q3, q4) = data.stats();
-        score = q3 * q4;
-        if (q3 < 350 && q4 < 350) {
-          _ac.stop();
-        }
-        data.answer2 = '$counter';
-      }
-      setState(() {});
-    });
-  }
-
-  @override
-  void dispose() {
-    _ac.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Column(children: [
-      Text('Day ${data.day}  Step $step  Counter $counter',
-          textScaler: const TextScaler.linear(1.5)),
+      Text('Day ${data.day}', textScaler: const TextScaler.linear(1.5)),
+      const Text('This one is a little slow but not unreasonable.'),
       Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         const Text('Part 1: '),
         SelectableText(data.answer1),
@@ -104,7 +64,7 @@ class _Day14WidgetState extends State<Day14Widget>
       ]),
       Flexible(
         child: CustomPaint(
-          painter: _Day14Painter(data),
+          painter: _Day16Painter(data),
           child: FractionallySizedBox(
             widthFactor: 1.0,
             heightFactor: 1.0,
@@ -120,9 +80,9 @@ class _Day14WidgetState extends State<Day14Widget>
   }
 }
 
-class _Day14Painter extends CustomPainter {
-  Day14Solution data;
-  _Day14Painter(this.data);
+class _Day16Painter extends CustomPainter {
+  Day16Solution data;
+  _Day16Painter(this.data);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -146,20 +106,6 @@ class _Day14Painter extends CustomPainter {
       Offset p2 = Offset(size.width, i);
       canvas.drawLine(p1, p2, redLine);
     }
-
-    List<Offset> robots = [];
-    double scale = size.width / data.w;
-    for (var r in data.robots) {
-      robots.add(Offset(r.x.toDouble() * scale + scale / 2,
-          r.y.toDouble() * scale + scale / 2));
-    }
-
-    final greenThickLine = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = scale
-      ..color = const Color.fromARGB(255, 0, 255, 0);
-
-    canvas.drawPoints(PointMode.points, robots, greenThickLine);
   }
 
   @override

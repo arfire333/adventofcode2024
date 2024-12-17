@@ -23,3 +23,4 @@ Flutter solutions for Advent of Code 2024.  Visualizations will be made as time 
 - Code is not necessarily _production_ ready.  Some days are better than others.  Recommendations for improvements are welcome.
 - Day 6 Takes a while
 - Day 13 claw game still needs scoring added.
+- Day 16 is a little slow but should complete in a minute or two.
