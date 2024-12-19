@@ -10,7 +10,7 @@ class Point {
 
   Point(this.r, this.c);
 
-  int get dist => _dist[this] ?? 0x7fffffffffffffff;
+  int get dist => _dist[this] ?? 0x7fffffffffff;
 
   set dist(int val) => Point._dist[this] = val;
 
@@ -164,7 +164,7 @@ class Day18Solution with Solution {
       Point.resetDist();
       Point(0, 0).dist = 0;
       search();
-      if (stop.dist >= 0x7fffffffffffffff) {
+      if (stop.dist >= 0x7fffffffffff) {
         break;
       }
       answer2 = '$i';
