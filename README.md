@@ -25,3 +25,4 @@ Flutter solutions for Advent of Code 2024.  Visualizations will be made as time 
 - Day 13 claw game still needs scoring added.
 - Day 16 is a little slow but should complete in a minute or two.
 - Day 17 Part 2 was derived from https://www.reddit.com/r/adventofcode/comments/1hg38ah/comment/m2l7qx8/
+- Day 18 is a little slow but should complete in a minute or two.
