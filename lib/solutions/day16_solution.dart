@@ -47,7 +47,7 @@ class Day16Solution with Solution {
   void resetDistance() {
     for (var entry in graph.entries) {
       var key = entry.key;
-      Pos.dist[key] = 0x7fffffffffffffff;
+      Pos.dist[key] = 0x7fffffffffff;
       prev[key] = {};
     }
     Pos.dist[start] = 0;
@@ -105,7 +105,7 @@ class Day16Solution with Solution {
       maze.add(lines[r].split(''));
       List<(int, String)> lineScores = [];
       for (int c = 0; c < lines[0].length; c++) {
-        lineScores.add((0x7fffffffffffffff, 'E'));
+        lineScores.add((0x7fffffffffff, 'E'));
         if (lines[r][c] == 'S') {
           start = Pos(r, c, 'E');
         } else if (lines[r][c] == 'E') {
@@ -155,7 +155,7 @@ class Day16Solution with Solution {
         }
       }
     }
-    int min = 0x7fffffffffffffff;
+    int min = 0x7fffffffffff;
     for (int i = 0; i < stop.length; i++) {
       var entry = stop[i];
       if (Pos.dist[entry]! < min) {
