@@ -84,11 +84,35 @@ void main() {
     s.part1();
     expect(s.answer1, '126384');
   });
+  test('Part 1 Mine', () {
+    Stopwatch watch = Stopwatch()..start();
+    Day21Solution s = Day21Solution();
+    s.parse(myData);
+    s.part1();
+    stdout.write('Time: ${watch.elapsed}');
+    expect(s.answer1, '238078');
+  });
 
   test('Part 2', () {
     Day21Solution s = Day21Solution();
     s.parse(rawData);
+    s.part1();
     s.part2();
     expect(s.answer2, 'ran 2');
   });
+  test('Part 2 Mine', () {
+    Day21Solution s = Day21Solution();
+
+    s.parse(myData);
+    s.part1();
+    for (int i = 3; i < 18; i++) {
+      Stopwatch watch = Stopwatch()..start();
+      s.topDepth = i;
+      s.part2();
+      stdout
+          .write('Depth: $i, Time: ${watch.elapsed}, Answer: ${s.answer2} \n');
+    }
+    expect(s.answer2, '136703556'); // answer for 10
+  });
+  // 136703556 to low  forgot to update number
 }

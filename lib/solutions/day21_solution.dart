@@ -125,7 +125,7 @@ class Day21Solution with Solution {
         numPadMap[(fromKey, toKey)] = (paths);
       }
     }
-    stdout.write('$numPadMap \n');
+    // stdout.write('$numPadMap \n');
   }
 
   void getDirPadList(
@@ -177,16 +177,25 @@ class Day21Solution with Solution {
         dirPadMap[(fromKey, toKey)] = (paths);
       }
     }
-    stdout.write('$dirPadMap \n');
+    // stdout.write('$dirPadMap \n');
   }
 
   int shortest = 0x7ffffffffffff;
   int topDepth = 3;
 
+  Map<(Set<String>, int), String> cache = {};
+
   Set<String> shortestEntry(Set<String> code, int depth) {
     String last = 'A';
     if (depth == 0) {
       return code;
+    }
+    var key = (code, depth);
+    if (code.length > 1) {
+      print('$code.length');
+    }
+    if (cache.containsKey(key)) {
+      return {cache[key] ?? ''};
     }
     int smallestLength = 0x7fffffffffff;
     String smallest = '';
@@ -195,37 +204,45 @@ class Day21Solution with Solution {
       for (var letter in current.characters) {
         late Set<String>? nextSet;
         if (depth == topDepth) {
-          print('**** NEXT DIGIT: $letter');
+          // print('**** NEXT DIGIT: $letter');
           nextSet = numPadMap[(last, letter)];
         } else {
           nextSet = dirPadMap[(last, letter)];
         }
-        if (depth != 1) {
-          print('$depth : $code : $last-$letter :  $nextSet ');
-        }
+        // print('$depth : $code : $last-$letter :  $nextSet ');
         int minLength = 0x7fffffffffffff;
         String minOne = '';
+        int minNumChanges = 0x7fffffffff;
+        String lastChar = '';
         for (var short in shortestEntry(nextSet!, depth - 1)) {
+          int numChanges = 0;
+          for (var l in short.characters) {
+            if (l != lastChar) {
+              numChanges++;
+              lastChar = l;
+            }
+          }
           if (short.length < minLength) {
             minOne = short;
             minLength = short.length;
+          }
+          if (short.length == minLength && numChanges < minNumChanges) {
+            minNumChanges = numChanges;
+            minOne = short;
           }
         }
         combined = combined + minOne;
         last = letter;
       }
-      if (depth != 1) {
-        print('$depth : NEXT: $combined ');
-      }
+      // print('$depth : NEXT: $combined ');
       if (combined.length < smallestLength) {
         smallest = combined;
         smallestLength = smallest.length;
       }
       last = 'A';
     }
-    if (depth != 1) {
-      print('$depth : SMALLEST: $smallest');
-    }
+    // print('$depth : SMALLEST: $smallest');
+    cache[key] = smallest;
     return {smallest};
   }
 
@@ -235,27 +252,30 @@ class Day21Solution with Solution {
     buildDirPad();
     int sum = 0;
     topDepth = 3;
-    // for (var code in combos) {
-    var code = '379A';
-    var last = 'A';
-    String completeCode = '';
-    for (var letter in code.characters) {
-      completeCode = completeCode + numPadMap[(last, letter)]!.first;
-      last = letter;
-    }
-    var numericCode = int.parse(code.substring(0, 3));
-    Set<String> entryOptions = shortestEntry({completeCode}, topDepth - 1);
+    for (var code in combos) {
+      var numericCode = int.parse(code.substring(0, 3));
+      Set<String> entryOptions = shortestEntry({code}, topDepth);
 
-    print(' $numericCode * ${entryOptions.first.length}');
-    sum += numericCode * entryOptions.first.length;
-    // }
+      // print(' $numericCode * ${entryOptions.first.length}');
+      sum += numericCode * entryOptions.first.length;
+    }
 
     answer1 = '$sum';
   }
 
   @override
   void part2() {
-    answer2 = 'ran 2';
+    int sum = 0;
+    // topDepth = 16;
+    for (var code in combos) {
+      var numericCode = int.parse(code.substring(0, 3));
+      Set<String> entryOptions = shortestEntry({code}, topDepth);
+
+      // print(' $numericCode * ${entryOptions.first.length}');
+      sum += numericCode * entryOptions.first.length;
+    }
+
+    answer2 = '$sum';
   }
 }
 
@@ -284,3 +304,4 @@ class Node {
 // 456A: <v<A>>^AA<vA<A>>^AAvAA<^A>A<vA>^A<A>A<vA>^A<A>A<v<A>A>^AAvA<^A>A
 // 379A: <v<A>>^AvA^A<vA<AA>>^AAvA<^A>AAvA^A<vA>^AA<A>A<v<A>A>^AAAvA<^A>A
 //       v<<A>^>AvA^Av<<A>^>AAv<A<A>^>AAvAA^<A>Av<A^>AA<A>Av<A<A>^>AAA<A>vA^A
+//       v<<A>>^AvA^Av<<A>>^AAv<A<A>>^AAvAA^<A>Av<A^>AA<A>Av<A<A>>^AAA<A>vA^A
