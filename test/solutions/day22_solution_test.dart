@@ -36,12 +36,6 @@ void main() {
     expect(solution.answer1, '37327623');
   });
 
-  test('Part 2 Prices', () {
-    Day22Solution solution = Day22Solution();
-    solution.parse(p2PricesData);
-    solution.part2();
-    expect(solution.answer2, 'ran 2');
-  });
   test('Part 2', () {
     Day22Solution solution = Day22Solution();
     solution.parse(p2Data);
